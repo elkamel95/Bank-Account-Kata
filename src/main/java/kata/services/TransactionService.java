@@ -1,13 +1,17 @@
-package services;
+package kata.services;
 
-import dao.Account;
-import dao.Statement;
-import exception.TransactionException;
+import kata.dao.Account;
+import kata.dao.Statement;
+import kata.exception.TransactionException;
+
+import java.util.logging.Logger;
 
 /***
  * This method allowed to manage the transaction (deposit,withdrawal,history).
  * */
 public class TransactionService {
+    Logger logger = Logger.getLogger(TransactionService.class.getName());
+
     /***
      * This method allowed you to deposit an amount and add it to the statement.
      *
@@ -42,10 +46,10 @@ public class TransactionService {
      * This method allowed to  print the account statement .
      * */
     public void printStatement(Account account) {
-        System.out.println("Date-------------------------| Amount--|---- balance");
+        logger.info("Date-------------------------| Amount--|---- balance");
 
         for (Statement h : account.getAccountStatement()) {
-            System.out.println(h.getDate() + " | ---" + h.getAmount() + "--- | " + h.getBalance());
+            logger.info(h.getDate() + " | ---" + h.getAmount() + "--- | " + h.getBalance());
 
         }
     }

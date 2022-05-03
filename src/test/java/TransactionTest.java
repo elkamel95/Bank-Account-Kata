@@ -1,7 +1,8 @@
-import exception.TransactionException;
-import services.TransactionService;
-import dao.Account;
-import dao.Statement;
+
+import kata.exception.TransactionException;
+import kata.services.TransactionService;
+import kata.dao.Account;
+import kata.dao.Statement;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,27 +16,30 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TransactionTest {
+class TransactionTest {
+    static Logger logger = Logger.getLogger(TransactionTest.class.getName());
+
     private static Instant startedAt;
 
     static TransactionService t;
     static Account account;
 
     @BeforeEach
-     void initAccount() {
+    void initAccount() {
         //Arrange
-        System.out.println("Appel avant chaque test");
+        logger.info("Appel avant chaque test");
 
         String rib = "5454545454";
         String firstName = "user1";
         String lastName = "Test";
         account = new Account(rib, firstName, lastName);
         account.setBalance(1.0);
-        assertEquals(account.getBalance() , 1.0);
+        assertEquals(1.0, account.getBalance());
         assertAll("Account",
                 () -> assertEquals("user1", account.getFirstName()),
                 () -> assertEquals("Test", account.getLastName()),
@@ -46,7 +50,7 @@ public class TransactionTest {
     }
 
     @Test
-     final void addBalanceAccountTest() {
+    final void addBalanceAccountTest() {
         //act
         account.addBalance(100);
         //assert
@@ -55,16 +59,16 @@ public class TransactionTest {
     }
 
     @Test
-     final void subBalanceAccountTest() {
+    final void subBalanceAccountTest() {
         //act
         account.subBalance(100);
         //assert
-        assertEquals(account.getBalance(),-99.0, "The deposit transaction failed");
+        assertEquals(-99.0,account.getBalance(), "The deposit transaction failed");
 
     }
 
     @Test
-     final void initStatement() {
+    final void initStatement() {
         //act
         Statement s = new Statement();
 //act
@@ -72,13 +76,13 @@ public class TransactionTest {
         s.setBalance(100 + s.getAmount());
         s.setDate(new Date());
 //assert
-        assertEquals(s.getBalance() , 200, "The addition is not correct");
+        assertEquals(200,s.getBalance(), "The addition is not correct");
         assertTrue(s.getDate().before(new Date()) || s.getDate().equals(new Date()), "The statement date is not correct");
 
     }
 
     @Test
-     final void addStatementTest() {
+    final void addStatementTest() {
         //act
         List<Statement> statementAccount = account.createStatement(100);
         //assert
@@ -87,8 +91,8 @@ public class TransactionTest {
     }
 
     @BeforeAll
-     static void initTransaction() {
-        System.out.println("Appel avant tous les tests");
+    static void initTransaction() {
+        logger.info("Appel avant tous les tests");
         startedAt = Instant.now();
 
         //Arrange
@@ -101,10 +105,11 @@ public class TransactionTest {
 
 
     }
+
     @Test
     public void whenExceptionThrown_thenAssertionSucceeds() {
         Exception exception = assertThrows(TransactionException.class, () -> {
-          t.withdrawal(account,50000);
+            t.withdrawal(account, 50000);
         });
 
         String expectedMessage = "Discount Amount is less than the balance";
@@ -112,9 +117,10 @@ public class TransactionTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
     @ParameterizedTest
     @ValueSource(doubles = {100, 30.10, 5.25, 3040, 150})
-     void accountDepositTest(double amount) {
+    void accountDepositTest(double amount) {
 
         //act
         double balance = account.getBalance();
@@ -127,7 +133,7 @@ public class TransactionTest {
 
     @ParameterizedTest
     @ValueSource(doubles = {300, 300.10, 500.25, 220, 320})
-     final void withdrawal(double amount) throws TransactionException {
+    final void withdrawal(double amount) throws TransactionException {
         try {
             t.withdrawal(account, amount);
             fail("Discount Amount is Greater than due balance");
@@ -162,8 +168,9 @@ public class TransactionTest {
 
         }
     }
+
     @AfterAll
-    static  void showTestDuration() {
+    static void showTestDuration() {
         System.out.println("Appel après tous les tests");
         Instant endedAt = Instant.now();
         long duration = Duration.between(startedAt, endedAt).toMillis();

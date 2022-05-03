@@ -1,4 +1,4 @@
-package exception;
+package kata.exception;
 /**
  * this method allowed to create a custom exception
  * */

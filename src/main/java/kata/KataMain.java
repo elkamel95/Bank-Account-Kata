@@ -1,8 +1,10 @@
-import services.TransactionService;
-import dao.Account;
+package kata;
+
+import kata.services.TransactionService;
+import kata.dao.Account;
 
 /**
- * This class represent the main application , allowd to exexcute the users stories
+ * This class represent the main application , allowed to execute the users stories
  * @author Elkamel Fahmi
  * @since 1.0
  */
