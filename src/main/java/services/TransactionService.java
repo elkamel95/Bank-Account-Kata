@@ -1,7 +1,8 @@
-package Services;
+package services;
 
 import dao.Account;
 import dao.Statement;
+import exception.TransactionException;
 
 /***
  * This method allowed to manage the transaction (deposit,withdrawal,history).
@@ -23,13 +24,13 @@ public class TransactionService {
      * Withdrawal an amount dd it to the statement
      *Checking the min balance
      * */
-    public synchronized void withdrawal(Account account, double amount) throws Exception {
-        if (Account.minBalance >= account.getBalance() - amount) {
-            throw new Exception("min balance ");
+    public synchronized void withdrawal(Account account, double amount) throws TransactionException {
+        if (Account.MINBALANCE >= account.getBalance() - amount) {
+            throw new TransactionException("Discount Amount is less than the balance");
 
         }
-        if (account.getBalance() < amount && Account.minBalance >= account.getBalance() - amount) {
-            throw new Exception("Discount Amount is Greater than due balance ");
+        if (account.getBalance() < amount && Account.MINBALANCE >= account.getBalance() - amount) {
+            throw new TransactionException("Discount Amount is Greater than due balance ");
 
         }
         account.subBalance(amount);

@@ -1,4 +1,4 @@
-import Services.TransactionService;
+import services.TransactionService;
 import dao.Account;
 
 /**
@@ -11,8 +11,6 @@ public class KataMain {
         TransactionService transaction = new TransactionService();
         //create account for the user1
         Account user1= new  Account("123456789123TF","Fahmi","Elkamel");
-        Account user2= new  Account("123456789123TF","Fahmi","Elkamel");
-
         transaction.deposit(user1,100);
         transaction.withdrawal(user1,90);
 

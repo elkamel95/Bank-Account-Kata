@@ -12,7 +12,7 @@ public class Account {
     private String firstName;
     private String lastName;
     private double balance = 0.0;
-    public static final double minBalance = -200;
+    public static final double MINBALANCE = -200;
 
     private List<Statement> accountStatement = new ArrayList<>();
 
